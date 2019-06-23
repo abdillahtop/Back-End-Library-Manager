@@ -21,10 +21,6 @@ app.listen(port, () => {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-// app.get('/', (req,res) => {
-//     res.send("Hello Pertama boskue")
-// })
-
 app.post('/',(req,res) => {
     const data = {
         name : req.body.name,
@@ -32,7 +28,7 @@ app.post('/',(req,res) => {
         location : req.body.location,
         category : req.body.category
     }
-    conn.query('INSERT INTO lantai1 SET ?', data, (err,result) => {
+    conn.query('INSERT INTO lantai1 SET ?', [data], (err,result) => {
         if (err) console.log(err)
         res.json(result)
     })
@@ -58,16 +54,16 @@ app.patch('/:userid', (req,res) => {
 app.delete('/:userid', (req,res) => {
     const userid = req.params.userid
 
-    conn.query('DELETE* FROM lantai1 WHERE id=?' , userid, (err,result) => {
+    conn.query('DELETE FROM lantai1 WHERE id=?' , [userid], (err,result) => {
         if(err) console.log(err)
         res.json(result)
     })
 })
 
-app.get('/:userid', (req,res) => {
-    const userid = req.params.userid
+app.get('/', (req,res) => {
+    const search = req.query.search
 
-    conn.query('SELECT* FROM lantai1 WHERE id=?' , userid, (err,result) => {
+    conn.query(`SELECT * FROM lantai1`, (err,result) => {
         if(err) console.log(err)
         res.json(result)
     })
