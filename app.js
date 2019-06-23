@@ -21,19 +21,18 @@ app.listen(port, () => {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.get('/', (req,res) => {
-    res.send("Hello Pertama boskue")
-})
+// app.get('/', (req,res) => {
+//     res.send("Hello Pertama boskue")
+// })
 
 app.post('/',(req,res) => {
     const data = {
         name : req.body.name,
-        phone : req.body.phone,
+        writter : req.body.writter,
         location : req.body.location,
-        created_at : new Date(),
-        updated_at : new Date()
+        category : req.body.category
     }
-    conn.query('INSERT INTO users SET ?', data, (err,result) => {
+    conn.query('INSERT INTO lantai1 SET ?', data, (err,result) => {
         if (err) console.log(err)
         res.json(result)
     })
@@ -44,16 +43,41 @@ app.patch('/:userid', (req,res) => {
     
     const data = {
         name : req.body.name,
-        phone : req.body.phone,
+        writter : req.body.writter,
         location : req.body.location,
-        created_at : new Date()
+        category : req.body.category
     }
 
-    conn.query('UPDATE users SET ? WHERE id= ?', [data,userid], (err,result) => {
+    conn.query('UPDATE lantai1 SET ? WHERE id=?', [data,userid], (err,result) => {
         if(err) console.log(err)
         res.json(result)
     })
 
 })
 
-app.delete('delete')
+app.delete('/:userid', (req,res) => {
+    const userid = req.params.userid
+
+    conn.query('DELETE* FROM lantai1 WHERE id=?' , userid, (err,result) => {
+        if(err) console.log(err)
+        res.json(result)
+    })
+})
+
+app.get('/:userid', (req,res) => {
+    const userid = req.params.userid
+
+    conn.query('SELECT* FROM lantai1 WHERE id=?' , userid, (err,result) => {
+        if(err) console.log(err)
+        res.json(result)
+    })
+})
+
+app.get('/', (req,res) => {
+    const search = req.query.search
+
+    conn.query(`SELECT * FROM lantai1 WHERE category LIKE '%${search}%' OR location LIKE '%${search}%' `, (err,result) => {
+        if(err) console.log(err)
+        res.json(result)
+    })
+})
