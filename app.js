@@ -60,8 +60,7 @@ app.delete('/:userid', (req,res) => {
     })
 })
 
-app.get('/', (req,res) => {
-    const search = req.query.search
+app.get('/all', (req,res) => {
 
     conn.query(`SELECT * FROM lantai1`, (err,result) => {
         if(err) console.log(err)
