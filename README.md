@@ -6,7 +6,7 @@
 npm start
 ```
 
-## Instal first
+## Install first
 ```
 npm install --save express mysql body-parser
 ```
