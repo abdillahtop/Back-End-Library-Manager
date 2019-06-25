@@ -14,7 +14,7 @@ npm install --save express mysql body-parser
 - install also nodemon to global
 ```
 npm install -g nodemon
-``
+```
 
 - set nodemon in package.json
  ```
