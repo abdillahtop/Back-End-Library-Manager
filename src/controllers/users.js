@@ -16,7 +16,7 @@ module.exports = {
     },
 
     //Using Promise
-    bookDetail : (req, res) => {
+    bookDetail : (req, res, next) => {
         const userid = req.params.userid
 
         userModels.bookDetail (userid)
@@ -25,14 +25,12 @@ module.exports = {
              miscHelper.response (res, result, 200)
          })
 
-         .catch ((error) => {
-            console.log(error)
-         })
+         .catch (next)
 
     },
 
     // Using Promise
-    newBook : (req, res) => {
+    newBook : (req, res, next) => {
         const data = {
             name : req.body.name,
             writter : req.body.writter,
@@ -52,12 +50,10 @@ module.exports = {
             miscHelper.response (res, result, 200)
         })
 
-        .catch ((error) => {
-            console.log(error)
-         })
+        .catch (next)
     },
 
-    updateBook : (req, res) => {
+    updateBook : (req, res, next) => {
         const userid = req.params.userid
         const data = {
             name : req.body.name,
@@ -77,28 +73,24 @@ module.exports = {
             miscHelper.response (res, result, 200)
         })
 
-        .catch ((error) => {
-            console.log(error)
-        })
+        .catch (next)
     },
 
-    delBook : (req, res) => {
+    delBook : (req, res, next) => {
         const userid = req.params.userid
 
         userModels.delBook (userid)
         .then (() => {
             const result = {
-                Delete : `data id ${userModels} has been delete`
+                Delete : `data id ${userid} has been delete`
             }
             miscHelper.response (res, result, 200)
         })
 
-        .catch ((error) => {
-            console.log(error)
-        })
+        .catch (next)
     },
 
-    findBook : (req, res) => {
+    findBook : (req, res, next) => {
         const search = req.query.search
 
         userModels.findBook (search)
@@ -107,9 +99,7 @@ module.exports = {
             miscHelper.response (res, result, 200)
         })
 
-        .catch ((error) => {
-            console.log(error)
-        })
+        .catch (next)
     }
 
 }

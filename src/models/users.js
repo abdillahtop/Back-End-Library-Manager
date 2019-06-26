@@ -11,11 +11,11 @@ module.exports = {
 
     bookDetail : (userid) => {
         return new Promise ((resolve, reject) => {
-            connection.query (`SELECT * FROM book WHERE id = ?`, userid, (err, result) => {
+            connection.query (`SELECT bo1.id,name,writter,location,bo2.category FROM book bo1 JOIN book_category bo2 ON bo1.category_id = bo2.category_id WHERE bo1.id = ?`, userid, (err, result) => {
                 if (!err) {
                     resolve (result)
                 } else {
-                    reject (new Error (err))
+                    reject (err)
                 }
             })
         })
