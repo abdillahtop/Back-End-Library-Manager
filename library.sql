@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2019 at 12:15 AM
+-- Generation Time: Jun 26, 2019 at 04:56 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.4
 
@@ -25,37 +25,68 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lantai1`
+-- Table structure for table `book`
 --
 
-CREATE TABLE `lantai1` (
+CREATE TABLE `book` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `writter` varchar(50) NOT NULL,
-  `location` text NOT NULL,
-  `category` varchar(50) NOT NULL
+  `location` varchar(50) NOT NULL,
+  `category_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `lantai1`
+-- Dumping data for table `book`
 --
 
-INSERT INTO `lantai1` (`id`, `name`, `writter`, `location`, `category`) VALUES
-(1, 'Dongeng favorite si Kancil', 'Astri Damayanti', 'Lt1.A0', 'Anak-anak'),
-(2, 'Kisah Putri Cinderella', 'lintas Media', 'Lt1.A0', 'Anak-anak'),
-(3, 'Petualangan Pinokio', 'Carlo Collodi', 'Lt1.A0', 'Anak-anak'),
-(4, 'Arduino : Belajar Cepat dan Pemrograman', 'Heri Andrianto', 'Lt1.A1', 'Teknik'),
-(5, 'Mengenal Pemrograman React JS', 'Jubite Enterprise', 'Lt1.A1', 'Teknik'),
-(6, 'Teknologi Komunikasi Data Modern', 'Jusak', 'Lt1.A1', 'Teknik');
+INSERT INTO `book` (`id`, `name`, `writter`, `location`, `category_id`) VALUES
+(1, 'Dongeng favorite si Kancil', 'Astri Damayanti', 'lantai 1,rak A', 1),
+(2, 'Kisah Putri Cinderella', 'lintas Media', 'lantai 1,rak A', 1),
+(3, 'Petualangan Pinokio', 'Carlo Collodi', 'lantai 1,rak A', 1),
+(4, 'Arduino : Belajar Cepat dan Pemrograman', 'Heri Andrianto', 'lantai 2,rak A', 2),
+(5, 'Mengenal Pemrograman React JS', 'Jubite Enterprise', 'lantai 2,rak A', 2),
+(6, 'Teknologi Komunikasi Data Modern', 'Jusak', 'lantai 2, rak A', 2),
+(17, 'Buku Sejarah', 'Anonymous', 'lantai 1,rak B', 2),
+(18, 'Buku Sejarah', 'Anonymous', 'lantai 1,rak B', 2),
+(19, 'Buku Sejarah', 'Anonymous', 'lantai 2,rak B', 2),
+(21, 'Buku DUMMY', 'Anonymous', 'lantai 2,rak B', 1),
+(22, 'Buku DUMMY', 'Anonymous', 'lantai 2,rak B', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `book_category`
+--
+
+CREATE TABLE `book_category` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `category_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `book_category`
+--
+
+INSERT INTO `book_category` (`id`, `category`, `category_id`) VALUES
+(1, 'anak-anak', 1),
+(2, 'Teknik', 2);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `lantai1`
+-- Indexes for table `book`
 --
-ALTER TABLE `lantai1`
+ALTER TABLE `book`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `book_category`
+--
+ALTER TABLE `book_category`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -63,10 +94,16 @@ ALTER TABLE `lantai1`
 --
 
 --
--- AUTO_INCREMENT for table `lantai1`
+-- AUTO_INCREMENT for table `book`
 --
-ALTER TABLE `lantai1`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `book`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `book_category`
+--
+ALTER TABLE `book_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
