@@ -1,105 +1,104 @@
-const userModels = require ('../models/users')
-const miscHelper = require ('../helpers/helpers')
+const userModels = require('../models/users')
+const miscHelper = require('../helpers/helpers')
 
 module.exports = {
-    getIndex : (req, res) => {
-        return res.json ({ message: 'Hello' })
+    getIndex: (req, res) => {
+        return res.json({
+            message: 'Hello'
+        })
     },
 
     //Using Callback
-    getBooks : (req, res) => {
-        userModels.getBooks ((err, result) => {
-            if (err) console.log (err)
-    
-            miscHelper.response (res, result, 200)
+    getBooks: (req, res) => {
+        userModels.getBooks((err, result) => {
+            if (err) console.log(err)
+
+            miscHelper.response(res, result, 200)
         })
     },
 
     //Using Promise
-    bookDetail : (req, res, next) => {
+    bookDetail: (req, res) => {
         const userid = req.params.userid
 
-        userModels.bookDetail (userid)
-         .then ((resultUser) => {
-             const result = resultUser[0]
-             miscHelper.response (res, result, 200)
-         })
+        userModels.bookDetail(userid)
+            .then((resultUser) => {
+                const result = resultUser[0]
+                miscHelper.response(res, result, 200)
+            })
 
-         .catch (next)
+            .catch((error) => {
+                console.log(error)
+            })
 
     },
 
     // Using Promise
-    newBook : (req, res, next) => {
+    newBook: (req, res) => {
         const data = {
-            name : req.body.name,
-            writter : req.body.writter,
-            location : req.body.location,
-            category_id : req.body.category_id
+            name: req.body.name,
+            writter: req.body.writter,
+            location: req.body.location,
+            category_id: req.body.category_id
         }
 
-        userModels.newBook (data)
-        .then (() => {
-            const result = {
-                name : data.name,
-                writter : data.writter,
-                location : data.location,
-                category_id : data.category_id
-            }
-    
-            miscHelper.response (res, result, 200)
-        })
+        userModels.newBook(data)
+            .then(() => {
+                miscHelper.response(res, data, 201)
+            })
 
-        .catch (next)
+            .catch((error) => {
+                console.log(error)
+            })
     },
 
-    updateBook : (req, res, next) => {
+    updateBook: (req, res) => {
         const userid = req.params.userid
         const data = {
-            name : req.body.name,
-            writter : req.body.writter,
-            location : req.body.location,
-            category_id : req.body.category_id
+            name: req.body.name,
+            writter: req.body.writter,
+            location: req.body.location,
+            category_id: req.body.category_id
         }
 
-        userModels.updateBook (data,userid)
-        .then (() => {
-            const result = {
-                name : data.name,
-                writter : data.writter,
-                location : data.location,
-                category_id : data.category_id
-            }
-            miscHelper.response (res, result, 200)
-        })
+        userModels.updateBook(data, userid)
+            .then(() => {
+                miscHelper.response(res, data, 200)
+            })
 
-        .catch (next)
+            .catch((error) => {
+                console.log(error)
+            })
     },
 
-    delBook : (req, res, next) => {
+    delBook: (req, res) => {
         const userid = req.params.userid
 
-        userModels.delBook (userid)
-        .then (() => {
-            const result = {
-                Delete : `data id ${userid} has been delete`
-            }
-            miscHelper.response (res, result, 200)
-        })
+        userModels.delBook(userid)
+            .then(() => {
+                const result = {
+                    Delete: `data id ${userid} has been delete`
+                }
+                miscHelper.response(res, result, 200)
+            })
 
-        .catch (next)
+            .catch((error) => {
+                console.log(error)
+            })
     },
 
-    findBook : (req, res, next) => {
+    findBook: (req, res) => {
         const search = req.query.search
 
-        userModels.findBook (search)
-        .then ((findingBook) => {
-            const result = findingBook
-            miscHelper.response (res, result, 200)
-        })
+        userModels.findBook(search)
+            .then((findingBook) => {
+                const result = findingBook
+                miscHelper.response(res, result, 200)
+            })
 
-        .catch (next)
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
 }

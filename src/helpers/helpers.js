@@ -7,6 +7,6 @@ module.exports = {
         resultPrint.status_code = status || 200
         resultPrint.result = result
 
-        return res.status (resultPrint.status_code).json(resultPrint)
+        return res.status(resultPrint.status_code).json(resultPrint)
     }
 }
