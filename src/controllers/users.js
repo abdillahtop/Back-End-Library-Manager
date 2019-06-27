@@ -2,19 +2,22 @@ const userModels = require('../models/users')
 const miscHelper = require('../helpers/helpers')
 
 module.exports = {
-    getIndex: (req, res) => {
+    getIndex: (res) => {
         return res.json({
             message: 'Hello'
         })
     },
 
-    //Using Callback
     getBooks: (req, res) => {
-        userModels.getBooks((err, result) => {
-            if (err) console.log(err)
+        userModels.getBooks()
+            .then((result) => {
 
-            miscHelper.response(res, result, 200)
-        })
+                miscHelper.response(res, result, 200)
+            })
+
+            .catch((error) => {
+                console.log(error)
+            })
     },
 
     //Using Promise
@@ -44,7 +47,7 @@ module.exports = {
 
         userModels.newBook(data)
             .then(() => {
-                miscHelper.response(res, data, 201)
+                miscHelper.response(res, data, 200)
             })
 
             .catch((error) => {
@@ -93,7 +96,12 @@ module.exports = {
         userModels.findBook(search)
             .then((findingBook) => {
                 const result = findingBook
-                miscHelper.response(res, result, 200)
+
+                if (result[0]) {
+                    miscHelper.response(res, result, 200)
+                } else {
+                    res.json("404 : Not Found")
+                }
             })
 
             .catch((error) => {

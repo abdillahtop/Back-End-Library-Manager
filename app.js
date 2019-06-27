@@ -17,9 +17,3 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.use('/', userRoute)
-
-app.use(function (req, res, next, err) {
-    res.send({
-        err: err.message
-    })
-})
