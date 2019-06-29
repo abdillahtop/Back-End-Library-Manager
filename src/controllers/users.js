@@ -8,35 +8,6 @@ module.exports = {
         })
     },
 
-    getBooks: (req, res) => {
-        userModels.getBooks()
-            .then((result) => {
-
-                miscHelper.response(res, result, 200)
-            })
-
-            .catch((error) => {
-                console.log(error)
-            })
-    },
-
-    //Using Promise
-    bookDetail: (req, res) => {
-        const userid = req.params.userid
-
-        userModels.bookDetail(userid)
-            .then((resultUser) => {
-                const result = resultUser[0]
-                miscHelper.response(res, result, 200)
-            })
-
-            .catch((error) => {
-                console.log(error)
-            })
-
-    },
-
-    // Using Promise
     newBook: (req, res) => {
         const data = {
             name: req.body.name,
@@ -55,8 +26,38 @@ module.exports = {
             })
     },
 
+    getBooks: (req, res) => {
+        userModels.getBooks()
+            .then((result) => {
+                miscHelper.response(res, result, 200)
+            })
+
+            .catch((error) => {
+                console.log(error)
+            })
+    },
+
+    bookDetail: (req, res) => {
+        const bookid = req.params.bookid
+
+        userModels.bookDetail(bookid)
+            .then((resultUser) => {
+                if (resultUser[0]) {
+                    const result = resultUser[0]
+                    miscHelper.response(res, result, 200)
+                } else {
+                    res.json("404 : Not Found")
+                }
+            })
+
+            .catch((error) => {
+                console.log(error)
+            })
+
+    },
+
     updateBook: (req, res) => {
-        const userid = req.params.userid
+        const bookid = req.params.bookid
         const data = {
             name: req.body.name,
             writter: req.body.writter,
@@ -64,7 +65,7 @@ module.exports = {
             category_id: req.body.category_id
         }
 
-        userModels.updateBook(data, userid)
+        userModels.updateBook(data, bookid)
             .then(() => {
                 miscHelper.response(res, data, 200)
             })
@@ -75,12 +76,12 @@ module.exports = {
     },
 
     delBook: (req, res) => {
-        const userid = req.params.userid
+        const bookid = req.params.bookid
 
-        userModels.delBook(userid)
+        userModels.delBook(bookid)
             .then(() => {
                 const result = {
-                    Delete: `data id ${userid} has been delete`
+                    Delete: `data id ${bookid} has been delete`
                 }
                 miscHelper.response(res, result, 200)
             })

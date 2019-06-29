@@ -5,11 +5,11 @@ const UserController = require('../controllers/users')
 
 Route
     .get('/all', UserController.getBooks)
-    .get('/:userid', UserController.bookDetail)
+    .get('/:bookid', UserController.bookDetail)
     .get('/', UserController.findBook)
     .post('/', UserController.newBook)
-    .patch('/:userid', UserController.updateBook)
-    .delete('/:userid', UserController.delBook)
+    .patch('/:bookid', UserController.updateBook)
+    .delete('/:bookid', UserController.delBook)
 
 
 module.exports = Route

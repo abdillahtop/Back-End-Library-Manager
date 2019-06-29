@@ -1,29 +1,6 @@
 const connection = require('../configs/db')
 
 module.exports = {
-    getBooks: () => {
-        return new Promise((resolve, reject) => {
-            connection.query(`SELECT bo1.id,name,writter,location,bo2.category FROM book bo1 JOIN book_category bo2 ON bo1.category_id = bo2.category_id`, (err, result) => {
-                if (!err) {
-                    resolve(result)
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    },
-
-    bookDetail: (userid) => {
-        return new Promise((resolve, reject) => {
-            connection.query(`SELECT bo1.id,name,writter,location,bo2.category FROM book bo1 JOIN book_category bo2 ON bo1.category_id = bo2.category_id WHERE bo1.id = ?`, userid, (err, result) => {
-                if (!err) {
-                    resolve(result)
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    },
 
     newBook: (data) => {
         return new Promise((resolve, reject) => {
@@ -37,9 +14,10 @@ module.exports = {
         })
     },
 
-    updateBook: (data, userid) => {
+    getBooks: () => {
         return new Promise((resolve, reject) => {
-            connection.query(`UPDATE book SET ? WHERE id=?`, [data, userid], (err, result) => {
+            connection.query(`SELECT a.id, name, writter, location, b.category 
+            FROM book a JOIN book_category b ON a.category_id = b.category_id`, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -49,9 +27,35 @@ module.exports = {
         })
     },
 
-    delBook: (userid) => {
+    bookDetail: (bookid) => {
         return new Promise((resolve, reject) => {
-            connection.query(`DELETE FROM book WHERE id=?`, userid, (err, result) => {
+            connection.query(`SELECT a.id, name, writter, location, b.category 
+            FROM book a JOIN book_category b ON a.category_id = b.category_id 
+            WHERE a.id = ?`, bookid, (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    },
+
+    updateBook: (data, bookid) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`UPDATE book SET ? WHERE id=?`, [data, bookid], (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    },
+
+    delBook: (bookid) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`DELETE FROM book WHERE id=?`, bookid, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -63,7 +67,10 @@ module.exports = {
 
     findBook: (search) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT bo1.id,name,writter,location,bo2.category FROM book bo1 JOIN book_category bo2 ON bo1.category_id = bo2.category_id WHERE name = ? OR bo2.category = ? OR location = ?`, [search, search, search], (err, result) => {
+            const sample = `%${search}%`
+            connection.query(`SELECT a.id, name, writter, location, b.category 
+            FROM book a JOIN book_category b ON a.category_id = b.category_id 
+            WHERE name LIKE ? OR b.category LIKE ? OR location LIKE ?`, [sample, sample, sample], (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
