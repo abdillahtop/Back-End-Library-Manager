@@ -10,10 +10,15 @@ module.exports = {
 
     newBook: (req, res) => {
         const data = {
-            name: req.body.name,
+            book_name: req.body.book_name,
             writter: req.body.writter,
             location: req.body.location,
-            category_id: req.body.category_id
+            image: req.body.image,
+            id_category: req.body.id_category,
+            description: req.body.description,
+            status: req.body.status,
+            created_at: new Date(),
+            updated_at: new Date()
         }
 
         userModels.newBook(data)
@@ -59,10 +64,15 @@ module.exports = {
     updateBook: (req, res) => {
         const bookid = req.params.bookid
         const data = {
-            name: req.body.name,
+            book_name: req.body.name,
             writter: req.body.writter,
             location: req.body.location,
-            category_id: req.body.category_id
+            image: req.body.image,
+            id_category: req.body.id_category,
+            description: req.body.description,
+            status: req.body.status,
+            created_at: new Date(),
+            updated_at: new Date()
         }
 
         userModels.updateBook(data, bookid)
@@ -108,6 +118,55 @@ module.exports = {
             .catch((error) => {
                 console.log(error)
             })
-    }
+    },
+
+    newBorrow: (req, res) => {
+        const bookid = req.params.bookid
+        const data = {
+            id_book: req.body.id_book,
+            no_ktp: req.body.no_ktp,
+            name: req.body.name,
+            borrow_date: new Date(),
+        }
+
+        userModels.newBorrow(data, bookid)
+            .then(() => {
+                miscHelper.response(res, data, 200)
+            })
+
+            .catch((error) => {
+                console.log(error)
+            })
+    },
+
+    getBorrow: (req, res) => {
+        userModels.getBorrow()
+            .then((result) => {
+                miscHelper.response(res, result, 200)
+            })
+
+            .catch((error) => {
+                console.log(error)
+            })
+    },
+
+    updateBorrow: (req, res) => {
+        const bookid = req.params.bookid
+        const data = {
+            no_ktp: req.body.no_ktp,
+            name: req.body.name,
+            return_date: new Date()
+        }
+
+        userModels.updateBorrow(data, bookid)
+            .then((result) => {
+                miscHelper.response(res, data, 200)
+            })
+
+            .catch((error) => {
+                console.log(error)
+            })
+    },
+
 
 }
