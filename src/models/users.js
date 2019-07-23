@@ -95,7 +95,7 @@ module.exports = {
 
     getBorrow: () => {
         return new Promise((resolve, rejected) => {
-            connection.query(`SELECT id_pinjam, b.book_name, no_ktp, name, borrow_date, return_date
+            connection.query(`SELECT id_pinjam, b.id_book, b.book_name, no_ktp, name, is_return ,borrow_date, return_date
             FROM tb_pinjam a JOIN tb_book b ON a.id_book = b.id_book`, (err, result) => {
                     if (!err) {
                         resolve(result)
@@ -106,17 +106,29 @@ module.exports = {
         })
     },
 
-    updateBorrow: (bookid, data) => {
+    updateBorrow: (loaningid, data) => {
         return new Promise((resolve, reject) => {
-            connection.query(`UPDATE tb_pinjam SET ? WHERE id_pinjam = ?`, [data, bookid], (err, result) => {
+            connection.query(`UPDATE tb_pinjam SET ? WHERE id_pinjam = ?`, [data, loaningid], (err, result) => {
                 if (!err) {
                     resolve(result)
-                    connection.query(`UPDATE tb_book SET status = 2 WHERE id_book = ?`, data.id_book)
+                    connection.query(`UPDATE tb_book SET status = "Tersedia" WHERE id_book = ?`, data.id_book)
+                } else {
+                    reject("Dari update borrow:", err)
+                }
+            })
+        })
+    },
+
+    register: (data) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`INSERT INTO users SET ?`, data, (err, result) => {
+                if (!err) {
+                    resolve(result)
                 } else {
                     reject(err)
                 }
             })
         })
-    },
+    }
 
 }

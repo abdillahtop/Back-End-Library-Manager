@@ -1,6 +1,8 @@
 const userModels = require('../models/users')
 const miscHelper = require('../helpers/helpers')
 
+const jwt = require('jsonwebtoken')
+
 module.exports = {
     getIndex: (res) => {
         return res.json({
@@ -126,6 +128,7 @@ module.exports = {
             id_book: req.body.id_book,
             no_ktp: req.body.no_ktp,
             name: req.body.name,
+            is_return: "False",
             borrow_date: new Date(),
         }
 
@@ -151,14 +154,14 @@ module.exports = {
     },
 
     updateBorrow: (req, res) => {
-        const bookid = req.params.bookid
+        const loaningid = req.params.loaningid
         const data = {
-            no_ktp: req.body.no_ktp,
-            name: req.body.name,
+            id_book: req.body.id_book,
+            is_return: "True",
             return_date: new Date()
         }
 
-        userModels.updateBorrow(data, bookid)
+        userModels.updateBorrow(loaningid, data)
             .then((result) => {
                 miscHelper.response(res, data, 200)
             })
@@ -167,6 +170,30 @@ module.exports = {
                 console.log(error)
             })
     },
+
+    register: (req, res) => {
+        const salt = miscHelper.generateSalt(18)
+        const passwordHash = miscHelper.setPassword(req.body.password, salt)
+
+        const data = {
+            email: req.body.email,
+            fullname: req.body.fullname,
+            password: req.body.password,
+            salt: passwordHash.salt,
+            token: 'test',
+            status: 1,
+            created_at: new Date(),
+            update_at: new Date()
+        }
+
+        userModels.register(data)
+            .then((resultRegister) => {
+                miscHelper.response(res, resultRegister, 200)
+            })
+            .catch((error) => {
+                console.log("from Reagister :", error)
+            })
+    }
 
 
 }
