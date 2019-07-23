@@ -13,10 +13,10 @@ module.exports = {
     },
 
     generateSalt: (length) => {
-        return crypto.randomBytes(Math.cell(length / 2)).toString('hex').slice(0, length)
+        return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length)
     },
 
-    setPasswor: (password, salt) => {
+    setPassword: (password, salt) => {
         let hash = crypto.createHmac('sha512', salt)
         hash.update(password)
         let value = hash.digest('hex')

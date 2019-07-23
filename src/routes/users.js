@@ -1,21 +1,27 @@
 const express = require('express')
 const Route = express.Router()
 
+const BookController = require('../controllers/books')
 const UserController = require('../controllers/users')
 const Auth = require('../helpers/auth')
 
 Route
-    // .all('/*', Auth.authInfo)
-    .get('/all', UserController.getBooks)
-    .get('/:bookid', UserController.bookDetail)
-    .get('/', UserController.findBook)
-    .get('/pinjam/all', UserController.getBorrow)
-    .post('/', UserController.newBook)
-    .post('/pinjam', UserController.newBorrow)
+    // .all('/*', )
+    .get('/all', BookController.getBooks)
+    .get('/:bookid', BookController.bookDetail)
+    .get('/', BookController.findBook)
+    .get('/pinjam/all', BookController.getBorrow)
+    .get('/users/all', Auth.authInfo, Auth.acceessToken, UserController.getUsers)
+
+    .post('/', BookController.newBook)
+    .post('/pinjam', BookController.newBorrow)
     .post('/register', UserController.register)
-    .patch('/:bookid', UserController.updateBook)
-    .patch('/pinjam/:bookid', UserController.updateBorrow)
-    .delete('/:bookid', UserController.delBook)
+    .post('/login', UserController.login)
+
+    .patch('/:bookid', BookController.updateBook)
+    .patch('/pinjam/:bookid', BookController.updateBorrow)
+
+    .delete('/:bookid', BookController.delBook)
 
 
 module.exports = Route
