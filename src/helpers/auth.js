@@ -6,7 +6,7 @@ const allowedAccess = process.env.REQUEST_HEADERS
 module.exports = {
     authInfo: (req, res, next) => {
         const headerAuth = req.headers['authorization']
-        const headerSecret = req.headers['x-acceess-token']
+        const headerSecret = req.headers['x-access-token']
 
         if (headerAuth !== allowedAccess) {
             return miscHelper.response(res, null, 401, 'Unauthorized, Need access token!')
@@ -21,13 +21,13 @@ module.exports = {
         }
     },
 
-    acceessToken: (req, res, next) => {
+    accessToken: (req, res, next) => {
         const secretKey = process.env.SECRET_KEY
-        const acceessToken = req.token
+        const accessToken = req.token
         const userToken = req.headers['x-control-user']
 
 
-        jwt.verify(acceessToken, secretKey, (err, decoded) => {
+        jwt.verify(accessToken, secretKey, (err, decoded) => {
             if (err && err.name === 'TokenExpiredError') return miscHelper.response(res, null, 401, 'Token expired')
 
             if (err && err.name === 'JsonWebTokenError') return miscHelper.response(res, null, 402, 'Invalid Token')

@@ -112,18 +112,7 @@ module.exports = {
                 if (!err) {
                     resolve(result)
                     connection.query(`UPDATE tb_book SET status = "Tersedia" WHERE id_book = ?`, data.id_book)
-                } else {
-                    reject("Dari update borrow:", err)
-                }
-            })
-        })
-    },
-
-    register: (data) => {
-        return new Promise((resolve, reject) => {
-            connection.query(`INSERT INTO users SET ?`, data, (err, result) => {
-                if (!err) {
-                    resolve(result)
+                    connection.query(`UPDATE tb_pinjam SET is_return = "True" WHERE id_book = ?`, data.id_book)
                 } else {
                     reject(err)
                 }
@@ -131,13 +120,13 @@ module.exports = {
         })
     },
 
-    getByEmail: (email) => {
+    deleteBorrow: (loaningid) => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT user_id, email, full_name, created_at, updated_at, salt, password FROM user WHERE email = ?', email, (err, result) => {
+            connection.query(`DELETE FROM tb_pinjam WHERE id_pinjam = ?`, loaningid, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
-                    reject(new Error(err))
+                    reject(err)
                 }
             })
         })

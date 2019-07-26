@@ -11,7 +11,8 @@ Route
     .get('/:bookid', BookController.bookDetail)
     .get('/', BookController.findBook)
     .get('/pinjam/all', BookController.getBorrow)
-    .get('/users/all', Auth.authInfo, Auth.acceessToken, UserController.getUsers)
+    .get('/user/all', Auth.authInfo, Auth.accessToken, UserController.getUsers)
+    .get('/user/loan/:cardId', UserController.loanUser)
 
     .post('/', BookController.newBook)
     .post('/pinjam', BookController.newBorrow)
@@ -19,7 +20,8 @@ Route
     .post('/login', UserController.login)
 
     .patch('/:bookid', BookController.updateBook)
-    .patch('/pinjam/:bookid', BookController.updateBorrow)
+    .patch('/pinjam/:loaningid', BookController.updateBorrow)
+    .patch('/users/logout/:userid', UserController.logout)
 
     .delete('/:bookid', BookController.delBook)
 
