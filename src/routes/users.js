@@ -6,13 +6,12 @@ const UserController = require('../controllers/users')
 const Auth = require('../helpers/auth')
 
 Route
-    // .all('/*', )
     .get('/all', BookController.getBooks)
     .get('/:bookid', BookController.bookDetail)
     .get('/', BookController.findBook)
-    .get('/pinjam/all', BookController.getBorrow)
+    .get('/pinjam/all', Auth.authInfo, Auth.accessToken, BookController.getBorrow)
     .get('/user/all', Auth.authInfo, Auth.accessToken, UserController.getUsers)
-    .get('/user/loan/:cardId', UserController.loanUser)
+    .get('/user/loan/:cardId',Auth.authInfo, Auth.accessToken, UserController.loanUser)
 
     .post('/', BookController.newBook)
     .post('/pinjam', BookController.newBorrow)

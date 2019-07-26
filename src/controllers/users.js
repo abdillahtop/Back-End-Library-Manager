@@ -43,39 +43,21 @@ module.exports = {
         const password = req.body.password
         userModels.getByEmail(email)
             .then((result) => {
-                if (email === "admin" && password === "admin") {
-                    const dataUser = result[0]
-                    console.log("email:")
-                    const usePassword = miscHelper.setPassword(password, dataUser.salt).passwordHash
-                    if (usePassword === dataUser.password) {
-                        dataUser.token = jwt.sign({
-                            userid: dataUser.user_id
-                        }, process.env.SECRET_KEY, { expiresIn: 'none' })
+            const dataUser = result[0]
+            const usePassword = miscHelper.setPassword(password, dataUser.salt).passwordHash
+            if (usePassword === dataUser.password) {
+                dataUser.token = jwt.sign({
+                    userid: dataUser.user_id
+                }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
-                        delete dataUser.salt
-                        delete dataUser.password
+                delete dataUser.salt
+                delete dataUser.password
 
-                        return miscHelper.response(res, dataUser, 200)
-                    } else {
-                        return miscHelper.response(res, null, 403, 'Wrong password!')
-                    }
-                } else {
-
-                    const dataUser = result[0]
-                    const usePassword = miscHelper.setPassword(password, dataUser.salt).passwordHash
-                    if (usePassword === dataUser.password) {
-                        dataUser.token = jwt.sign({
-                            userid: dataUser.user_id
-                        }, process.env.SECRET_KEY, { expiresIn: '1h' })
-
-                        delete dataUser.salt
-                        delete dataUser.password
-
-                        return miscHelper.response(res, dataUser, 200)
-                    } else {
-                        return miscHelper.response(res, null, 403, 'Wrong password!')
-                    }
-                }
+                return miscHelper.response(res, dataUser, 200)
+            } else {
+                return miscHelper.response(res, null, 403, 'Wrong password!')
+            }
+                
             })
             .catch((error) => {
                 console.log(error)
