@@ -130,7 +130,7 @@ module.exports = {
             name: req.body.name,
             is_return: "False",
             borrow_date: new Date(),
-            return_date: new Date(+ 7)
+            return_date: new Date()
         }
 
         userModels.newBorrow(data, bookid)
