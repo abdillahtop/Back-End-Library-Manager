@@ -6,11 +6,11 @@ module.exports = {
         const data = {
             title: req.body.title,
             writter: req.body.writter,
-            location: req.body.location,
+            location: "Menunggu Veritifikasi",
             image: req.body.image,
             id_category: req.body.id_category,
             description: req.body.description,
-            status: req.body.status,
+            status: "Tersedia",
             created_at: new Date(),
             updated_at: new Date()
         }
