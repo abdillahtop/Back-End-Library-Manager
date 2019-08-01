@@ -33,7 +33,7 @@ module.exports = {
             if (err && err.name === 'JsonWebTokenError') return miscHelper.response(res, null, 402, 'Invalid Token')
 
             if (parseInt(userToken) !== parseInt(decoded.userid)) return miscHelper.response(res, null, 401, 'Invalid User Token')
-            console.log(decoded)
+            console.log("dari decode:", decoded)
             next()
         })
     }

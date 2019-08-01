@@ -16,7 +16,7 @@ module.exports = {
 
     getBooks: () => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT a.id_book, book_name, writter, location, image, b.category_name, description, status, created_at, updated_at
+            connection.query(`SELECT a.id_book, title, writter, location, image, a.id_category, b.category_name, description, status, created_at, updated_at
             FROM tb_book a JOIN tb_category b ON a.id_category = b.id_category`, (err, result) => {
                     if (!err) {
                         resolve(result)
@@ -29,7 +29,7 @@ module.exports = {
 
     bookDetail: (bookid) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT a.id_book, book_name, writter, location, image, b.category_name, description, status, created_at, updated_at
+            connection.query(`SELECT a.id_book, title, writter, location, image, b.category_name, description, status, created_at, updated_at
             FROM tb_book a JOIN tb_category b ON a.id_category = b.id_category 
             WHERE a.id_book = ?`, bookid, (err, result) => {
                     if (!err) {
@@ -68,9 +68,9 @@ module.exports = {
     findBook: (search) => {
         return new Promise((resolve, reject) => {
             const sample = `%${search}%`
-            connection.query(`SELECT a.id_book, book_name, writter, location, image, b.category_name , description, status, created_at, updated_at
+            connection.query(`SELECT a.id_book, title, writter, location, image, b.category_name , description, status, created_at, updated_at
             FROM tb_book a JOIN tb_category b ON a.id_category = b.id_category 
-            WHERE book_name LIKE ? OR b.category_name LIKE ? OR location LIKE ?`, [sample, sample, sample], (err, result) => {
+            WHERE title LIKE ? OR b.category_name LIKE ? OR location LIKE ?`, [sample, sample, sample], (err, result) => {
                     if (!err) {
                         resolve(result)
                     } else {
@@ -79,57 +79,5 @@ module.exports = {
                 })
         })
     },
-
-    newBorrow: (data) => {
-        return new Promise((resolve, rejected) => {
-            connection.query(`INSERT INTO tb_pinjam SET ?`, data, (err, result) => {
-                if (!err) {
-                    resolve(result)
-                    connection.query(`UPDATE tb_book SET status = 'Tidak tersedia' WHERE id_book =?`, [data.id_book])
-                } else {
-                    rejected(err)
-                }
-            })
-        })
-    },
-
-    getBorrow: () => {
-        return new Promise((resolve, rejected) => {
-            connection.query(`SELECT id_pinjam, b.id_book, b.book_name, no_ktp, name, is_return ,borrow_date, return_date
-            FROM tb_pinjam a JOIN tb_book b ON a.id_book = b.id_book`, (err, result) => {
-                    if (!err) {
-                        resolve(result)
-                    } else {
-                        rejected(err)
-                    }
-                })
-        })
-    },
-
-    updateBorrow: (loaningid, data) => {
-        return new Promise((resolve, reject) => {
-            connection.query(`UPDATE tb_pinjam SET ? WHERE id_pinjam = ?`, [data, loaningid], (err, result) => {
-                if (!err) {
-                    resolve(result)
-                    connection.query(`UPDATE tb_book SET status = "Tersedia" WHERE id_book = ?`, data.id_book)
-                    connection.query(`UPDATE tb_pinjam SET is_return = "True" WHERE id_book = ?`, data.id_book)
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    },
-
-    deleteBorrow: (loaningid) => {
-        return new Promise((resolve, reject) => {
-            connection.query(`DELETE FROM tb_pinjam WHERE id_pinjam = ?`, loaningid, (err, result) => {
-                if (!err) {
-                    resolve(result)
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    }
 
 }

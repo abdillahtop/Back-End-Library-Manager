@@ -3,7 +3,7 @@ const connection = require('../configs/db')
 module.exports = {
     getUsers: () => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM users', (err, result) => {
+            connection.query('SELECT * FROM tb_users', (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -15,7 +15,7 @@ module.exports = {
 
     userDetail: (userid) => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM users WHERE user_id  = ?', userid, (err, result) => {
+            connection.query('SELECT * FROM tb_users WHERE user_id  = ?', userid, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -27,7 +27,7 @@ module.exports = {
 
     register: (data) => {
         return new Promise((resolve, reject) => {
-            connection.query('INSERT INTO users SET ?', data, (err, result) => {
+            connection.query('INSERT INTO tb_users SET ?', data, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -39,10 +39,9 @@ module.exports = {
 
     getByEmail: (email) => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT user_id, email, full_name,salt, password, created_at, updated_at FROM users WHERE email = ?', email, (err, result) => {
+            connection.query('SELECT id_user,id_card, b.role, email, fullname,salt, password, created_at, updated_at FROM tb_users a JOIN tb_role b ON a.id_role = b.id_role WHERE email = ?', email, (err, result) => {
                 if (!err) {
                     resolve(result)
-                    connection.query('UPDATE users SET status = 1 WHERE email = ?', email)
                 } else {
                     reject(new Error(err))
                 }
@@ -50,9 +49,9 @@ module.exports = {
         })
     },
 
-    logout: (userid) => {
+    updateToken: (email, token) => {
         return new Promise((resolve, reject) => {
-            connection.query(`UPDATE users SET status = 0 WHERE user_id = ?`, userid, (err, result) => {
+            connection.query('UPDATE tb_users SET token = ? WHERE email = ?', [token, email], (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -62,9 +61,9 @@ module.exports = {
         })
     },
 
-    loanUser: (IdCard) => {
+    deleteToken: (userid) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT a.book_name , b.borrow_date, b.return_date FROM tb_book a Join tb_pinjam b WHERE a.id_book = b.id_book AND b.no_ktp= ?`, IdCard, (err, result) => {
+            connection.query('UPDATE tb_users SET token = ? WHERE id_user= ?', ['Test', userid], (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
@@ -72,6 +71,18 @@ module.exports = {
                 }
             })
         })
-    }
+    },
+
+    delUser: (userid) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`DELETE FROM tb_users WHERE id_user=?`, userid, (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    },
 
 }
