@@ -1,13 +1,14 @@
-const userModels = require('../models/books')
+const bookModels = require('../models/books')
 const miscHelper = require('../helpers/helpers')
 
 module.exports = {
     newBook: (req, res) => {
+        console.log("request controller: " + req.file)
         const data = {
             title: req.body.title,
             writter: req.body.writter,
-            location: "Menunggu Veritifikasi",
-            image: req.body.image,
+            location: req.body.location,
+            image: req.file.path,
             id_category: req.body.id_category,
             description: req.body.description,
             status: "Tersedia",
@@ -15,7 +16,7 @@ module.exports = {
             updated_at: new Date()
         }
 
-        userModels.newBook(data)
+        bookModels.newBook(data)
             .then(() => {
                 miscHelper.response(res, data, 200)
             })
@@ -27,11 +28,12 @@ module.exports = {
     },
 
     getBooks: (req, res) => {
-        userModels.getBooks()
+        let limit = parseInt(req.query.limit) || 10
+        let page = parseInt(req.query.page) || 1
+        bookModels.getBooks(limit, page)
             .then((result) => {
                 miscHelper.response(res, result, 200)
             })
-
             .catch((error) => {
                 console.log(error)
             })
@@ -40,7 +42,7 @@ module.exports = {
     bookDetail: (req, res) => {
         const bookid = req.params.bookid
 
-        userModels.bookDetail(bookid)
+        bookModels.bookDetail(bookid)
             .then((resultUser) => {
                 if (resultUser[0]) {
                     const result = resultUser[0]
@@ -70,7 +72,7 @@ module.exports = {
             updated_at: new Date()
         }
 
-        userModels.updateBook(data, bookid)
+        bookModels.updateBook(data, bookid)
             .then(() => {
                 miscHelper.response(res, data, 200)
             })
@@ -83,7 +85,7 @@ module.exports = {
     delBook: (req, res) => {
         const bookid = req.params.bookid
 
-        userModels.delBook(bookid)
+        bookModels.delBook(bookid)
             .then(() => {
                 const result = {
                     Delete: `data id ${bookid} has been delete`
@@ -99,7 +101,7 @@ module.exports = {
     findBook: (req, res) => {
         const search = req.query.search
 
-        userModels.findBook(search)
+        bookModels.findBook(search)
             .then((findingBook) => {
                 const result = findingBook
 

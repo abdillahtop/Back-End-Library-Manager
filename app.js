@@ -6,7 +6,7 @@ const cors = require('cors')
 const xssFilter = require('x-xss-protection')
 const logger = require('morgan')
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.SERVER_PORT || 5000;
 
 const userRoute = require('./src/routes/users')
 const loanRoute = require('./src/routes/loan')
@@ -31,6 +31,7 @@ app.use(cors())
 app.options('*', cors(corsOptions))
 app.use(xssFilter())
 app.use(logger('dev'))
+app.use('/uploads', express.static('uploads'));
 
 app.listen(port, () => {
     console.log(`\n App listening on port ${port} \n`)
