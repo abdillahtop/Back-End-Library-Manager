@@ -14,10 +14,10 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 // const upload = multer({ dest: 'uploads/' })
-console.log(upload)
 Route
     .all('/', Auth.authInfo)
     .get('/all', BookController.getBooks)
+    .get('/category', BookController.Allcategory)
     .get('/:bookid', BookController.bookDetail)
     .get('/', BookController.findBook)
     .post('/', upload.single('image'), BookController.newBook)

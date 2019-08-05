@@ -3,7 +3,6 @@ const miscHelper = require('../helpers/helpers')
 
 module.exports = {
     newBook: (req, res) => {
-        console.log("request controller: " + req.file)
         const data = {
             title: req.body.title,
             writter: req.body.writter,
@@ -114,6 +113,16 @@ module.exports = {
 
             .catch((error) => {
                 console.log(error)
+            })
+    },
+
+    Allcategory: (req, res) => {
+        bookModels.Allcategory()
+            .then((result) => {
+                miscHelper.response(res, result, 200)
+            })
+            .catch((error) => {
+                console.log("error all category", error)
             })
     }
 }

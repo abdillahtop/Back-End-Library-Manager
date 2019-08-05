@@ -80,6 +80,18 @@ module.exports = {
                     }
                 })
         })
+    },
+
+    Allcategory: () => {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM tb_category', (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            })
+        })
     }
 
 }

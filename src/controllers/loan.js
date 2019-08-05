@@ -11,9 +11,10 @@ module.exports = {
             id_card: req.body.id_card,
             name: req.body.name,
             expaired: expired_date,
+            forfeit: 0,
             is_return: "False",
             borrow_date: new Date(),
-            return_date: "Anda Belum Mengembalikan Buku"
+            return_date: new Date()
         }
 
         loandModels.newLoan(data, bookid)
@@ -55,6 +56,7 @@ module.exports = {
         const loanid = req.params.loanid
         const data = {
             id_book: req.body.id_book,
+            forfeit: req.body.forfeit,
             is_return: "True",
             return_date: new Date()
         }
