@@ -3,6 +3,7 @@ const Route = express.Router()
 const BookController = require('../controllers/books')
 const Auth = require('../helpers/auth')
 const multer = require('multer')
+require('dotenv').config()
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

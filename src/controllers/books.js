@@ -1,13 +1,32 @@
 const bookModels = require('../models/books')
 const miscHelper = require('../helpers/helpers')
+const cloudinary = require('cloudinary')
 
 module.exports = {
-    newBook: (req, res) => {
+    newBook: async (req, res) => {
+        const path = req.file.path
+        const getUrl = async req => {
+            cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET
+            })
+
+            let dataimg
+            await cloudinary.uploader.upload(path, result => {
+                console.log('coba ini', path)
+                // const fs = require('fs')
+                // fs.unlink(path)
+                dataimg = result.url
+            })
+            return dataimg
+        }
+        console.log('coba', await getUrl());
         const data = {
             title: req.body.title,
             writter: req.body.writter,
             location: req.body.location,
-            image: req.file.path,
+            image: await getUrl(),
             id_category: req.body.id_category,
             description: req.body.description,
             status: "Tersedia",

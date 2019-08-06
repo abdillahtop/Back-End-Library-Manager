@@ -30,7 +30,7 @@ module.exports = {
 
     loanDetail: (cardid) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT a.title , b.borrow_date, b.return_date, b.forfeit, b.expaired FROM tb_book a Join tb_pinjam b WHERE a.id_book = b.id_book AND b.id_card = ?`, cardid, (err, result) => {
+            connection.query(`SELECT b.id_pinjam, b.id_book, a.title ,a.writter, a.image, b.borrow_date, b.return_date, b.expaired, b.forfeit, b.expaired FROM tb_book a Join tb_pinjam b WHERE a.id_book = b.id_book AND b.id_card = ?`, cardid, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
