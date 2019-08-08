@@ -46,7 +46,7 @@ module.exports = {
     },
 
     getBooks: (req, res) => {
-        let limit = parseInt(req.query.limit)
+        let limit = parseInt(req.query.limit) || 10
         let page = parseInt(req.query.page) || 1
         bookModels.getBooks(limit, page)
             .then((results) => {

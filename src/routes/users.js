@@ -10,6 +10,7 @@ Route
     .post('/register', UserController.register)
     .post('/login', UserController.login)
     .post('/logout/:userid', UserController.logout)
+    .post('/verified/:userid', UserController.verifiedUser)
     .delete('/:userid', UserController.delUser)
 
 module.exports = Route

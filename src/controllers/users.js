@@ -25,6 +25,7 @@ module.exports = {
             fullname: req.body.fullname,
             password: passwordHash.passwordHash,
             salt: passwordHash.salt,
+            is_verified: 0,
             token: 'Test',
             id_role: 2,
             created_at: new Date(),
@@ -88,6 +89,17 @@ module.exports = {
     delUser: (req, res) => {
         const userid = req.params.userid
         userModels.delUser(userid)
+            .then((result) => {
+                miscHelper.response(res, result, 200)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    },
+
+    verifiedUser: (req, res) => {
+        const userid = req.params.userid
+        userModels.verifiedUser(userid)
             .then((result) => {
                 miscHelper.response(res, result, 200)
             })
