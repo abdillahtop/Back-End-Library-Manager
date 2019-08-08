@@ -6,7 +6,17 @@ module.exports = {
         let resultPrint = {}
 
         resultPrint.error = error || null
-        resultPrint.status_code = status || 200
+        resultPrint.status_code = status
+        resultPrint.result = result
+
+        return res.status(resultPrint.status_code).json(resultPrint)
+    },
+    responses: (res, result, status, totalPage, error) => {
+        let resultPrint = {}
+
+        resultPrint.error = error || null
+        resultPrint.status_code = status
+        resultPrint.totalPage = totalPage
         resultPrint.result = result
 
         return res.status(resultPrint.status_code).json(resultPrint)

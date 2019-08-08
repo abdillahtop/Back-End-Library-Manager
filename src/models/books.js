@@ -17,15 +17,24 @@ module.exports = {
     getBooks: (limit, page) => {
         let offset = (limit * page) - limit
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT a.id_book, title, writter, location, image, a.id_category, b.category_name, description, status, created_at, updated_at
-            FROM tb_book a JOIN tb_category b ON a.id_category = b.id_category ORDER BY a.id_book desc LIMIT ? OFFSET ?`, [limit, offset], (err, result) => {
-                    if (!err) {
-                        resolve(result)
-                    } else {
-                        reject(err)
-                    }
-                })
+            connection.query('SELECT count(*) as total from tb_book', (err, result) => {
+                if (!err) {
+                    // resolve(result)
+                    let totalData = result[0].total
+                    let totalPage = Math.ceil(totalData / limit)
+                    connection.query(`SELECT a.id_book, title, writter, location, image, a.id_category, b.category_name, description, status, created_at, updated_at
+            FROM tb_book a JOIN tb_category b ON a.id_category = b.id_category ORDER BY a.id_book desc LIMIT ? OFFSET ?`, [limit, offset], (errr, results) => {
+                            if (!errr) {
+                                resolve([results, totalPage])
+                            } else {
+                                reject(errr)
+                            }
+                        })
 
+                } else {
+                    reject(err)
+                }
+            })
         })
     },
 

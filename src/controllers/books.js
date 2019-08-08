@@ -46,11 +46,12 @@ module.exports = {
     },
 
     getBooks: (req, res) => {
-        let limit = parseInt(req.query.limit) || 10
+        let limit = parseInt(req.query.limit)
         let page = parseInt(req.query.page) || 1
         bookModels.getBooks(limit, page)
-            .then((result) => {
-                miscHelper.response(res, result, 200)
+            .then((results) => {
+                // console.log(results[1])
+                miscHelper.responses(res, results[0], 200, results[1])
             })
             .catch((error) => {
                 console.log(error)
