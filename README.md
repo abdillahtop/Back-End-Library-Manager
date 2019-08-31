@@ -1,29 +1,35 @@
-# SImple REST CRUD
+# Backend Hit Hit Baam Game
+![](https://img.shields.io/badge/Code%20Style-Standard-yellow.svg)
+![](https://img.shields.io/badge/Dependencies-Express-green.svg)
 
-- Import file *library.sql* to database
-- Run program with nodemon
+
+## Prerequiste
+- Node.js - Download and Install [Node.js](https://nodejs.org/en/) with [NVM](https://github.com/creationix/nvm) (Node Version Manager) - Simple bash script to manage multiple active node.js versions.
+- MySQL - Download and Install [MySQL](https://www.mysql.com/downloads/) - Make sure it's running on the default port.  
+
+## Installation
+### Clone
 ```
-npm start
+$ git clone https://github.com/abdillahtop/Back-End-Library-Manager.git
+$ cd Back-End-Library-Manager
+$ npm install
 ```
 
-## Install first
+### Create Environment Variable
 ```
-npm install --save express mysql body-parser
-```
-
-- install also nodemon to global
-```
-npm install -g nodemon
+$ touch .env
+$ nano .env
 ```
 
-- set nodemon in package.json
- ```
- "start": "nodemon app.js"
- ```
- 
- - install also env
- ```
- npm install dotenv
- ```
- 
- # Have Fun
+```
+DB_HOST="Your_Host"
+DB_USER="Your_Username"
+DB_PASS="Your_Password"
+DB_NAME="Your_Table"
+
+SERVER_PORT=9999
+```
+### Start Development Server
+```
+$ npm start
+```
